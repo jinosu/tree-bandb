@@ -17,7 +17,10 @@ class Item {
          }
       };
    }
-
+@Override
+   public String toString(){
+       return ("Last Index "+ label+ " --->  WEIGHR: "+weight + " , VALUE: "+value);
+   }
    public int label;
    public double value;
    public double weight;
@@ -87,8 +90,8 @@ class KnapsackSolution {
 
 public class BranchAndBoundSolver extends KnapsackSolver {
    public static ArrayList<resultbb> nodetree = new ArrayList<>();
-
    static public int c ;
+   public static resultbb save;
    int count =0;
     static int ccc= 0;
    private class Node implements Comparable<Node> {
@@ -148,7 +151,7 @@ public class BranchAndBoundSolver extends KnapsackSolver {
    public KnapsackSolution solve() {
       count++;
       Collections.sort(items, Item.byRatio());
-      
+        
       Node best = new Node();
       Node root = new Node();
       resultbb nodest = new resultbb();
@@ -162,14 +165,16 @@ public class BranchAndBoundSolver extends KnapsackSolver {
       while (!q.isEmpty()) {
          resultbb nodet = qq.poll();
          Node node = q.poll();
-          System.out.println(best.value+"");
-         if (node.bound > best.value && node.h < items.size() - 1) {   
+        
+         if (node.bound > best.value && node.h < items.size() - 1) { 
+           
             Node with = new Node(node);
             Item item = items.get(node.h);
             with.weight += item.weight;
                 
             if (with.weight <= capacity) {
                with.taken.add(items.get(node.h));
+        
                with.value += item.value;
                 with.index = node.index*2-1;
                nodet.setR(true);
@@ -178,7 +183,13 @@ public class BranchAndBoundSolver extends KnapsackSolver {
                nodetree.add(nodewith);
                
                if (with.value > best.value) {
-                  best = with;
+                  best = with;  
+                  save = nodewith;
+                   for (Item item1 : best.taken) {
+                       System.out.println(save.getX()+ "   "+save.getY());
+                   }
+                   System.out.println("lllllllllllllllllllllllllllllll");
+                
                }
                if (with.bound > best.value) {
                         
@@ -186,6 +197,7 @@ public class BranchAndBoundSolver extends KnapsackSolver {
                   q.offer(with);
                }
             }
+        
               ccc++;
             Node without = new Node(node);
             resultbb nodewithout = new resultbb();
@@ -209,16 +221,23 @@ public class BranchAndBoundSolver extends KnapsackSolver {
       solution.value = best.value;
       solution.weight = best.weight;
       solution.items = best.taken;
+       System.out.println("//////////////////////////////////////////////////");
+       for (Item item : best.taken) {
+           System.out.println(item.label);
+       }
+{
+          
+      }
       solution.approach = "Using Branch and Bound the best feasible solution found";
       
       return solution;
    }
 
-   public static void main(String[] args) {
+     public static void main(String[] args) {
        System.out.println("<n>\n1 value1 weight1\n2 value2 weight2\n.   .   .\n.   .   .\n.   .   .\nn valuen weightn\n<Capacity>");
       Scanner scanner = new Scanner(System.in);
       int count = scanner.nextInt();
-      
+      String Answer = "";
       List<Item> items = new LinkedList<Item>();
       for (int i = 0; i < count; i++) {
          Item item = new Item();
@@ -232,12 +251,18 @@ public class BranchAndBoundSolver extends KnapsackSolver {
       
       List<KnapsackSolver> solvers = new ArrayList<KnapsackSolver>();
       
-     
+      GUIPage g = new GUIPage();
+      g.setText(items);
       solvers.add(new BranchAndBoundSolver(items, capacity));
-      
       for (KnapsackSolver solver : solvers) {
-         System.out.println(solver.solve());
+         Answer += solver.solve()+"\n";
       }
+       System.out.println(Answer);
+      ANSWERGui a = new ANSWERGui();
+      a.setText(Answer);
+       System.out.println(Answer);
+      Knapsack_Window window = new Knapsack_Window(g,a);
+      window.setVisible(true);
        System.out.println("Times: "+count);
        System.out.println(ccc);
    }
