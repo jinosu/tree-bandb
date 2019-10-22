@@ -103,7 +103,7 @@ if(k==3)
     k=0;
     }}
               
-          if(k==1)
+          if(k==2)
                    for (resultbb position : all) {            
             sum = 0;
             sum = delete(position.getY());
