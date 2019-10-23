@@ -146,12 +146,10 @@ public class BranchAndBoundSolver extends KnapsackSolver {
    public BranchAndBoundSolver(List<Item> items, int capacity) {
       super(items, capacity);
    }
-   
    @Override
    public KnapsackSolution solve() {
       count++;
-      Collections.sort(items, Item.byRatio());
-        
+      Collections.sort(items, Item.byRatio()); 
       Node best = new Node();
       Node root = new Node();
       resultbb nodest = new resultbb();
@@ -167,14 +165,11 @@ public class BranchAndBoundSolver extends KnapsackSolver {
          Node node = q.poll();
         
          if (node.bound > best.value && node.h < items.size() - 1) { 
-           
             Node with = new Node(node);
             Item item = items.get(node.h);
             with.weight += item.weight;
-                
             if (with.weight <= capacity) {
                with.taken.add(items.get(node.h));
-        
                with.value += item.value;
                 with.index = node.index*2-1;
                nodet.setR(true);
@@ -191,13 +186,11 @@ public class BranchAndBoundSolver extends KnapsackSolver {
                    System.out.println("lllllllllllllllllllllllllllllll");
                 
                }
-               if (with.bound > best.value) {
-                        
+               if (with.bound > best.value) {           
                   qq.offer(nodewith);
                   q.offer(with);
                }
-            }
-        
+            }    
               ccc++;
             Node without = new Node(node);
             resultbb nodewithout = new resultbb();
@@ -238,17 +231,22 @@ public class BranchAndBoundSolver extends KnapsackSolver {
       Scanner scanner = new Scanner(System.in);
       int count = scanner.nextInt();
       String Answer = "";
+      int sum = 0;
       List<Item> items = new LinkedList<Item>();
       for (int i = 0; i < count; i++) {
-         Item item = new Item();
+         Item item = new Item();    
          item.label = scanner.nextInt();
          item.value = scanner.nextDouble();
          item.weight = scanner.nextDouble();
          items.add(item);
+         sum+= item.weight; 
       }
       c=count;
       int capacity = scanner.nextInt();
-      
+       while (sum<capacity||capacity<0) {  
+           System.out.println("input again");           
+             capacity = scanner.nextInt();
+         }
       List<KnapsackSolver> solvers = new ArrayList<KnapsackSolver>();
       
       GUIPage g = new GUIPage();
