@@ -88,7 +88,9 @@ public class GUIPage extends javax.swing.JFrame {
     public void  TextOutput(List<Item> item){
         Collections.sort(item, Item.byRatio());
         int i = 1;
+        
         for(Item items : item){
+            if(item.size()==i) break;
             sumtest += "NEW Index "+i+" ,FROM ==> "+items.toString()+"\n";
             i++;
         }

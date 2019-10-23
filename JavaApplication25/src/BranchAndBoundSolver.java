@@ -76,9 +76,9 @@ class KnapsackSolution {
       builder.append(" ");
       builder.append(weight);
       builder.append("\n");
-      
+       System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
       Collections.sort(items, Item.byLabel());
-      
+     
       for (Item item : items) {
          builder.append(item.label);
          builder.append(" ");
@@ -101,13 +101,14 @@ public class BranchAndBoundSolver extends KnapsackSolver {
       public double bound;
       public double value;
       public double weight;
-      
+        public double boundt;
       public Node() {
          taken = new ArrayList<Item>();
       }
       public Node(Node parent) {
          h = parent.h + 1;
          taken = new ArrayList<Item>(parent.taken);
+         boundt = parent.boundt;
          bound = parent.bound;
          value = parent.value;
          weight = parent.weight;
@@ -128,19 +129,24 @@ public class BranchAndBoundSolver extends KnapsackSolver {
          int i = h;
          double w = weight;
          bound = value;
+          boundt = value;
          Item item;
+           System.out.println(boundt+"//////////////////////////////////////////////////////////////");
+         int t = 0 ;
          do {
             item = items.get(i);
             if (w + item.weight > capacity) break;
             w += item.weight;
             bound += item.value;
             i++;
-          
+            t = item.label;
+            boundt+=item.value;
          } while (i < items.size());
+         if(item.label!=t)
          bound += (capacity - w) * (item.value / item.weight);
-         //System.out.println(bound); 
+         System.out.println(bound); 
         nodet.setSum( bound);
-      }
+        }
    }
    
    public BranchAndBoundSolver(List<Item> items, int capacity) {
@@ -163,7 +169,8 @@ public class BranchAndBoundSolver extends KnapsackSolver {
       while (!q.isEmpty()) {
          resultbb nodet = qq.poll();
          Node node = q.poll();
-        
+          System.out.println(node.boundt+"VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
+          
          if (node.bound > best.value && node.h < items.size() - 1) { 
             Node with = new Node(node);
             Item item = items.get(node.h);
@@ -176,7 +183,7 @@ public class BranchAndBoundSolver extends KnapsackSolver {
                resultbb nodewith = new resultbb();
                with.computeBound(nodewith);
                nodetree.add(nodewith);
-               
+              
                if (with.value > best.value) {
                   best = with;  
                   save = nodewith;
@@ -232,15 +239,22 @@ public class BranchAndBoundSolver extends KnapsackSolver {
       int count = scanner.nextInt();
       String Answer = "";
       int sum = 0;
+      int p = 0;
       List<Item> items = new LinkedList<Item>();
       for (int i = 0; i < count; i++) {
          Item item = new Item();    
          item.label = scanner.nextInt();
+         p = item.label;
          item.value = scanner.nextDouble();
          item.weight = scanner.nextDouble();
          items.add(item);
          sum+= item.weight; 
       }
+        Item item = new Item();    
+         item.label = p+1 ;
+         item.value = 0;
+         item.weight = 100;
+         items.add(item);
       c=count;
       int capacity = scanner.nextInt();
        while (sum<capacity||capacity<0) {  
@@ -248,13 +262,14 @@ public class BranchAndBoundSolver extends KnapsackSolver {
              capacity = scanner.nextInt();
          }
       List<KnapsackSolver> solvers = new ArrayList<KnapsackSolver>();
-      
+   
       GUIPage g = new GUIPage();
       g.setText(items);
-      solvers.add(new BranchAndBoundSolver(items, capacity));
+      solvers.add(new BranchAndBoundSolver(items, capacity)); System.out.println("ooooooooooooooooooooooooooooooooooooooooo");
       for (KnapsackSolver solver : solvers) {
          Answer += solver.solve()+"\n";
-      }
+      }      
+      System.out.println("ooooooooooooooooooooooooooooooooooooooooo");
        System.out.println(Answer);
       ANSWERGui a = new ANSWERGui();
       a.setText(Answer);
@@ -266,3 +281,5 @@ public class BranchAndBoundSolver extends KnapsackSolver {
    }
 }
 		
+
+//แก้ปัญหาใส่levelเปล่าทำให้บังคับให่คำนวนไปถึงlevelสุดท้าย 

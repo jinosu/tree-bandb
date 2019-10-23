@@ -62,7 +62,7 @@ public class ProcessingTest extends PApplet{
         resultbb n;
         max = (int) pow(2,c)*64;   
         System.out.println(c);
-      for (int i = 0; i < c+1; i++) {
+      for (int i = 0; i < c; i++) {
             for (int j = 1; j < pow(2, i)+1; j++) {
                n = new resultbb();
                n.setX(j);
@@ -113,12 +113,12 @@ if(k==3)
         if(position.getX()>pow(2,position.getY()-1)){             
           
               stroke(0);
-             if(position.getY()!=c)
+             if(position.getY()!=c-1)
               line((float) (pol*space+800)+xx, (float) ((128*position.getY()+128)*space+yy), (float) ((pp-(pow(2,-position.getY()-2))*(max))*space+800)+xx, (float) ((128*(position.getY()+1)+128)*space+yy));
-                 if(position.getY()!=c)
+                 if(position.getY()!=c-1)
               if(i!=0)
               line((float) (pol*space+800)+xx, (float) ((128*position.getY()+128)*space+yy), (float) ((pp+(pow(2,-position.getY()-2))*(max))*space+800)+xx, (float) ((128*(position.getY()+1)+128)*space+yy));
-                 if(position.getY()!=c)
+                 if(position.getY()!=c-1)
                if(i==0){
                   line((float) (pol*space+800)+xx, (float) ((128*position.getY()+128)*space+yy), (float) ((por+(pow(2,-position.getY()-2))*(max))*space+800)+xx, (float) ((128*(position.getY()+1)+128)*space+yy));
                }     fill(0);
@@ -130,10 +130,10 @@ if(k==3)
           else{
             stroke(0);
               strokeWeight((float) (4*space)); 
-                if(position.getY()!=c)
+                if(position.getY()!=c-1)
               line((float) (por*space+800)+xx, (float) ((128*position.getY()+128)*space+yy), (float) ((por-(pow(2,-position.getY()-2))*(max))*space+800)+xx, (float) ((128*(position.getY()+1)+128)*space)+yy);
            
-                 if(position.getY()!=c)
+                 if(position.getY()!=c-1)
               line((float) (por*space+800)+xx, (float) ((128*position.getY()+128)*space+yy), (float) ((por+(pow(2,-position.getY()-2))*(max))*space+800)+xx, (float) ((128*(position.getY()+1)+128)*space)+yy);
                  fill(0);
                  noStroke();
@@ -143,7 +143,8 @@ if(k==3)
         } 
             i=0;
             int number = 1;
-        for (resultbb position : BranchAndBoundSolver.nodetree) {            
+        for (resultbb position : BranchAndBoundSolver.nodetree) {   
+            
             sum = 0;
             sum = delete(position.getY());
             por = (int) ((pow(2,-position.getY()))*(max)*(pow(2,position.getY()-1)+1-position.getX())-sum);
